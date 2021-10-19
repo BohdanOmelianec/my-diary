@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
+
+.myDiarySpans {
+    display: inline-block;
+    margin: 6px auto;
+    font-family: 'Noto Sans SC';
+    font-size: 24px;
+    font-weight: 300;
+    text-align: center;
+    color: #42495e;
+    cursor: pointer;
+}
+
+.myDiarySpansSm {
+    display: inline-block;
+    width: 48px;
+    // height: 48px;
+    font-family: 'Noto Sans SC';
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+    color: #42495e;
+    cursor: pointer;
+}
+
+.diaryBlock {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    &__list {
+        width: 1440px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 444px 444px 444px;
+        column-gap: 27px;
+        padding: 30px;
+        align-items: center;
+        
+    }
+    &__item {
+        width: 444px;
+        height: 225px;
+        margin: 0 0 30px;
+        padding: 12px;
+        border: solid 1px #979797;
+        background-color: #fff;
+    }
+}

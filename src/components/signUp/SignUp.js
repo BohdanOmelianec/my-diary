@@ -17,7 +17,7 @@ export default function SignIn(props) {
     return(
         <>
             <Header><span className='signUpHeader'>注册</span></Header>
-            <div className='wrapper'>
+            <div className='wrapperUp'>
                 <img src={logo} alt="logo"></img>
                 
                 <form className='signUp' autoComplete='off'>
