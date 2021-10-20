@@ -6,8 +6,10 @@ import SignIn from './components/signIn/SignIn';
 import SignOut from './components/SignOut';
 import SignUp from './components/signUp/SignUp';
 import MyDiary from './components/myDiary/MyDiary';
+import NewItem from './components/newItem/NewItem';
 
 import './style.scss';
+
 
 
 function App() {
@@ -32,6 +34,9 @@ function App() {
                     </Route>
                     <Route exact path='/my-diary'>
                         <MyDiary/>
+                    </Route>
+                    <Route exact path='/diary-item'>
+                        <NewItem/>
                     </Route>
                 </Switch>
             </div> 

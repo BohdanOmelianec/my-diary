@@ -45,6 +45,7 @@ export default function SignIn() {
                     <input className='signIn__input' 
                         type='email' 
                         placeholder='邮件地址...'
+                        autoComplete='off'
                         value={email}
                         onChange={ e => {setEmail(e.target.value)}}>
                     </input>

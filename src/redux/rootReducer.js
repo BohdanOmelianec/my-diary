@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     users: [],
+    posts: [],
     currentUser: {},
-
     signedUp: false
 }
 
@@ -23,9 +23,12 @@ const reducerNew = createSlice({
         signout(state) {
             state.signedUp = false
             state.currentUser = {}
+        },
+        createPost(state, action) {
+            state.posts = [...state.posts, action.payload]
         }
     }
 });
 
 export default reducerNew.reducer;
-export const { createUser, signin, signout } = reducerNew.actions;
+export const { createUser, signin, signout, createPost } = reducerNew.actions;

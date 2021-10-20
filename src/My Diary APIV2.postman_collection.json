@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "1d09ed94-af40-4fb9-af65-ad437d986699",
+		"name": "我的日记API - V2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register - 注册",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6ce3ec3b-c8cd-4f00-9265-5cf8a9d6c877",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"authsessiontoken\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"陈奕迅\",\n\t\"email\": \"eason@tiancai.pro\",\n\t\"password\": \"password123456\"\n}"
+				},
+				"url": {
+					"raw": "https://Illia-db1e80.postdemo.tcn.asia/api/v2/auth/register",
+					"host": [
+						"https://Illia-db1e80.postdemo.tcn.asia"
+					],
+					"path": [
+						"api",
+						"v2",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": [
+			]
+		},
+		{
+			"name": "Login - 登录",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f901b2f6-c332-44d1-87b8-814eae13fd9b",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"authsessiontoken\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"eason@tiancai.pro\",\n\t\"password\": \"password123456\"\n}"
+				},
+				"url": {
+					"raw": "https://Illia-db1e80.postdemo.tcn.asia/api/v2/auth/login",
+					"host": [
+						"https://Illia-db1e80.postdemo.tcn.asia"
+					],
+					"path": [
+						"api",
+						"v2",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": [
+			]
+		},
+		{
+			"name": "Get Self User - 获取自己的用户信息",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authsessiontoken",
+						"type": "text",
+						"value": "{{authsessiontoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://Illia-db1e80.postdemo.tcn.asia/api/v2/users/me",
+					"host": [
+						"https://Illia-db1e80.postdemo.tcn.asia"
+					],
+					"path": [
+						"api",
+						"v2",
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": [
+			]
+		},
+		{
+			"name": "Add Post - 加新的帖子",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authsessiontoken",
+						"value": "{{authsessiontoken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"天才测试项目（这个可以不用改，现在的UI不实用title）\",\n\t\"content\": \"用户编辑的内容在这儿。。。。。。。\"\n}"
+				},
+				"url": {
+					"raw": "https://Illia-db1e80.postdemo.tcn.asia/api/v2/posts",
+					"host": [
+						"https://Illia-db1e80.postdemo.tcn.asia"
+					],
+					"path": [
+						"api",
+						"v2",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Post - 获取一个帖子",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authsessiontoken",
+						"type": "text",
+						"value": "{{authsessiontoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://Illia-db1e80.postdemo.tcn.asia/api/v2/posts/340650bc-efd4-4159-8fee-04f52d47e29e",
+					"host": [
+						"https://Illia-db1e80.postdemo.tcn.asia"
+					],
+					"path": [
+						"api",
+						"v2",
+						"posts",
+						"340650bc-efd4-4159-8fee-04f52d47e29e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Self Posts - 获取自己的帖子",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "authsessiontoken",
+						"type": "text",
+						"value": "{{authsessiontoken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://Illia-db1e80.postdemo.tcn.asia/api/v2/users/me/posts?page=1&count=20",
+					"host": [
+						"https://Illia-db1e80.postdemo.tcn.asia"
+					],
+					"path": [
+						"api",
+						"v2",
+						"users",
+						"me",
+						"posts"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "count",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "caaf7976-f699-41fa-b10c-f7da6b104328",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "803f93b8-2bc6-42a3-86fe-6e76cc5fd68c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
