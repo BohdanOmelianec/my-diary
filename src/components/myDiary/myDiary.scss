@@ -44,5 +44,15 @@
         padding: 12px;
         border: solid 1px #979797;
         background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
     }
+}
+
+.plusImg {
+    width: 70px;
+    height: 74px;
+    margin: 0;
 }

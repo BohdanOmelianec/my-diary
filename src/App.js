@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, NavLink, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Redirect } from 'react-router';
 // import Header from './components/header/Header';
 import SignIn from './components/signIn/SignIn';
@@ -16,11 +16,6 @@ function App() {
     })
     return (
         <>
-            {/* <NavLink to='/sign-in' className='main_link'>Sign in</NavLink>
-            <NavLink to='/sign-up' className='main_link'>Sign up</NavLink>
-            <NavLink to='/sign-out' className='main_link'>Sign out</NavLink>
-            <NavLink to='/my-diary' className='main_link'>My Diary</NavLink> */}
-            {/* <Header>er</Header> */}
             <div id="content">
                 <Switch>
                     <Route exact path='/'>

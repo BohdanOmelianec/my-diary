@@ -77,8 +77,11 @@ img {
     }
 }
 
-.incorect {
-    color: red;
-    font-size: 9px;
-    visibility: hidden;
+.errorMsg {
+    display: none;
+    height: 22px;
+    margin: 46px 165px 16px 164px;
+    font-family: 'Noto Sans SC';
+    font-size: 15px;
+    color: #ff2424;
 }
