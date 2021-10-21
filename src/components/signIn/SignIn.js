@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import logo from '../../img/signin_logo.svg';
@@ -15,6 +15,11 @@ export default function SignIn() {
     const users = useSelector(state => state.reducerNew.users)
     
     const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     fetch('https://Illia-db1e80.postdemo.tcn.asia/api/v2/posts')
+    //         .then(res => console.log(res.json()))
+    // }, [])
 
     const signIn = (e) => {
         e.preventDefault();

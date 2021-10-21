@@ -4,12 +4,14 @@ import { Link, Redirect } from 'react-router-dom';
 import Header from '../header/Header';
 import {useHistory} from 'react-router'
 
-import { signout, createPost } from '../../redux/rootReducer';
-import './newItem.scss';
+import { signout, updatePost, setSelectedItem } from '../../redux/rootReducer';
+import './editItem.scss';
 
-const NewItem = () => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+const EditItem = () => {
+    const selectedItem = useSelector(state => state.reducerNew.selectedItem);
+
+    const [title, setTitle] = useState(selectedItem ? selectedItem[0].title : '');
+    const [content, setContent] = useState(selectedItem ? selectedItem[0].content : '');
     const [error, setError] = useState(false);
     const signedUp = useSelector(state => state.reducerNew.signedUp);
     
@@ -17,16 +19,15 @@ const NewItem = () => {
     const history = useHistory()
     
 
-    const addPost = (e) => {
+    const editPost = (e) => {
         e.preventDefault();
         if(title && content) {
-            dispatch(createPost({
-                title, 
-                content,
-                creator: 'Creator',
-                created_at:	'2020年8月3日',
-                updated_at:	'string (date-time)'
+            dispatch(updatePost({
+                ...selectedItem[0],
+                title,
+                content
             }))
+            dispatch(setSelectedItem())
             history.push("/my-diary");
         } else {
             setError(true);
@@ -38,7 +39,7 @@ const NewItem = () => {
         <>
             {signedUp ? null : <Redirect to='/sign-in' />}
             <Header>
-                <Link to='/my-diary'><span className='myDiarySpansSm' >'退回</span></Link>
+                <Link to='/my-diary'><span className='myDiarySpansSm' onClick={() => dispatch(setSelectedItem())} >'退回</span></Link>
                 <span className='myDiarySpans'>新日记条目</span>
                 <span className='myDiarySpansSm' onClick={() => dispatch(signout())}>退出</span>
             </Header>
@@ -62,10 +63,10 @@ const NewItem = () => {
                 <input className='item__submitInput'
                     type='submit'
                     value='注册'
-                    onClick={addPost}/>
+                    onClick={editPost}/>
             </div>
         </>
     );
 };
 
-export default NewItem;
+export default EditItem;

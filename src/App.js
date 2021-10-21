@@ -7,6 +7,7 @@ import SignOut from './components/SignOut';
 import SignUp from './components/signUp/SignUp';
 import MyDiary from './components/myDiary/MyDiary';
 import NewItem from './components/newItem/NewItem';
+import EditItem from './components/editItem/EditItem';
 
 import './style.scss';
 
@@ -37,6 +38,9 @@ function App() {
                     </Route>
                     <Route exact path='/diary-item'>
                         <NewItem/>
+                    </Route>
+                    <Route exact path='/edit-item'>
+                        <EditItem/>
                     </Route>
                 </Switch>
             </div> 
