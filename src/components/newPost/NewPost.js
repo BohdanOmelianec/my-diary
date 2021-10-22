@@ -3,9 +3,13 @@ import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import {useHistory} from 'react-router'
-import { signout } from '../../redux/rootReducer';
+import { signout, addPost } from '../../redux/rootReducer';
+import APIService from '../../service/APIService';
 
 import './newPost.scss';
+
+
+const apiService = new APIService();
 
 
 const NewPost = () => {
@@ -19,31 +23,32 @@ const NewPost = () => {
     const dispatch = useDispatch();
     
 
-    const addPost = (e) => {
+    const addPost = async (e) => {
         e.preventDefault();
 
         if(title && content) {
-            fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/posts`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authsessiontoken': `${token}` 
-                },
-                body: JSON.stringify({
-                    title, 
-                    content,
-                })
-            })
-                .then(res => {
-                    if(!res.ok) {
-                        throw new Error(`Could not fetch this url status: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(res => console.log(res))
+            const data = {
+                title, 
+                content,
+            }
+            const responce = await apiService.postResource(`posts?authsessiontoken=${token}`, data)
+                .then(res => res)
                 .catch(() => setError(true));
+            dispatch(addPost(responce))
             history.push("/my-diary");
         }
+
+        // fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/posts`, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'authsessiontoken': `${token}` 
+        //         },
+        //         body: JSON.stringify({
+        //             title, 
+        //             content,
+        //         })
+        //     })
     }
 
     return (

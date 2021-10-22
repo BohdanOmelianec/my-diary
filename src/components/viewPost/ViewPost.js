@@ -3,8 +3,11 @@ import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { signout, setSelectedId } from '../../redux/rootReducer';
+import APIService from '../../service/APIService';
 
 import './viewPost.scss';
+
+const apiService = new APIService();
 
 const ViewPost = () => {
     const [error, setError] = useState(false);
@@ -17,13 +20,7 @@ const ViewPost = () => {
     
 
     useEffect(() => {
-        fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/posts/${id}?authsessiontoken=${token}`)
-            .then(res => {
-                if(!res.ok) {
-                    throw new Error(`Could not fetch this url status: ${res.status}`);
-                }
-                return res.json();
-            })
+        apiService.getResource(`posts/${id}?authsessiontoken=${token}`)
             .then(res => setPost(res))
             .catch(() => setError(true));
     }, [])

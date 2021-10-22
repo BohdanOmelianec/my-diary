@@ -3,11 +3,13 @@ import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { signout, setSelectedId, setPosts } from '../../redux/rootReducer';
+import { signout, setSelectedId, setPosts, setFirstLoading } from '../../redux/rootReducer';
+import APIService from '../../service/APIService';
 
 import './myDiary.scss';
 import plus from '../../img/plus.png';
 
+const apiService = new APIService();
 
 const MyDiary = () => {
     const [myself, setMyself] = useState({});
@@ -15,34 +17,24 @@ const MyDiary = () => {
     const posts = useSelector(state => state.reducerNew.posts);
     const isOnline = useSelector(state => state.reducerNew.isOnline);
     const token = useSelector(state => state.reducerNew.token);
+    const firstLoading = useSelector(state => state.reducerNew.firstLoading);
 
     const history = useHistory();
     const dispatch = useDispatch();
     
 
-    
-
-
     useEffect(() => {
-        fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/users/me?authsessiontoken=${token}`)
-            .then(res => {
-                if(!res.ok) {
-                    throw new Error(`Could not fetch this url status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(res => setMyself(res))
-            .catch(() => setError(true));
-        fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/users/me/posts?authsessiontoken=${token}`)
-            .then(res => {
-                if(!res.ok) {
-                    throw new Error(`Could not fetch this url status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(res => dispatch(setPosts(res)))
-            .catch(() => setError(true));
-    }, [])
+        if(firstLoading) {
+            apiService.getResource(`users/me?authsessiontoken=${token}`)
+                .then(res => setMyself(res))
+                .catch(() => setError(true));
+
+            apiService.getResource(`users/me/posts?authsessiontoken=${token}`)
+                .then(res => dispatch(setPosts(res)))
+                .catch(() => setError(true));  
+            dispatch(setFirstLoading(false))
+        }
+    }, []);
 
     const viewPost = (id) => {
         dispatch(setSelectedId(id))

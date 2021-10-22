@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import { Redirect } from 'react-router';
 // import Header from './components/header/Header';
 import SignIn from './components/signIn/SignIn';
-import SignOut from './components/SignOut';
 import SignUp from './components/signUp/SignUp';
 import MyDiary from './components/myDiary/MyDiary';
 import NewPost from './components/newPost/NewPost';
@@ -29,9 +28,6 @@ function App() {
                     </Route>
                     <Route exact path='/sign-up'>
                         <SignUp/>
-                    </Route>
-                    <Route exact path='/sign-out'>
-                        <SignOut/>
                     </Route>
                     <Route exact path='/my-diary'>
                         <MyDiary/>

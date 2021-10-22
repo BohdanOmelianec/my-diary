@@ -4,7 +4,8 @@ const initialState = {
     posts: [],
     selectedId: '',
     isOnline: false,
-    token: ''
+    token: '',
+    firstLoading: true
 }
 
 const reducerNew = createSlice({
@@ -17,6 +18,12 @@ const reducerNew = createSlice({
         },
         setPosts(state, action) {//use
             state.posts = action.payload
+        },
+        addPost(state, action) {
+            state.posts = [...state.posts, action.payload]
+        },
+        setFirstLoading(state, action) {
+            state.firstLoading = action.payload
         },
         signin(state, action) {
             state.isOnline = true
@@ -51,4 +58,4 @@ const reducerNew = createSlice({
 });
 
 export default reducerNew.reducer;
-export const { signin, signout, setPosts, setSelectedId, setToken } = reducerNew.actions;
+export const { signin, signout, setPosts, setSelectedId, setToken, addPost, setFirstLoading } = reducerNew.actions;

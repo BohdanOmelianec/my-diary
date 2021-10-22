@@ -4,10 +4,11 @@ import { Link, Redirect } from 'react-router-dom';
 import logo from '../../img/signin_logo.svg';
 import { setToken } from '../../redux/rootReducer';
 import Header from '../header/Header';
+import APIService from '../../service/APIService';
+
 import './signIn.scss';
 
-
-
+const apiService = new APIService();
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -20,24 +21,18 @@ export default function SignIn() {
 
     const signIn = (e) => {
         e.preventDefault();
-        fetch('https://illia-ef1b38.postdemo.tcn.asia/api/v2/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        if(email && password) {
+            const data = {
                 email,
                 password
-            })
-        })
-            .then(res => {
-                if(!res.ok) {
-                    throw new Error(`Could not fetch this url status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(res => dispatch(setToken(res.token)))
-            .catch(() => setError(true))
+            };
+    
+            apiService.authorisation('auth/login', data)
+                .then(res => dispatch(setToken(res.token)))
+                .catch(() => setError(true))
+        } else {
+            setError(true)
+        }
     }
 
     return(

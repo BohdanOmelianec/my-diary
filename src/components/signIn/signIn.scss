@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
-
 .signInHeader {
     display: inline-block;
     margin: 6px auto;
-    font-family: 'Noto Sans SC';
     font-size: 24px;
     font-weight: 300;
     text-align: center;
@@ -35,7 +32,6 @@ img {
     &__label {
         height: 33px;
         margin: 0 0 13px;
-        font-family: 'Noto Sans SC';
         font-size: 22px;
         font-weight: 300;
         letter-spacing: 0.96px;
@@ -47,7 +43,6 @@ img {
         padding: 6px 8px 7px;
         border: solid 2px #000;
         background-color: #f2f2f2;
-        font-family: 'Noto Sans SC';
         font-size: 22px;
         font-weight: 300;
         letter-spacing: 0.25px;
@@ -60,7 +55,6 @@ img {
         padding: 4px 53px 5px;
         background-color: #291e1e;
         color: #fff;
-        font-family: NotoSansSC;
         font-size: 28px;
         letter-spacing: 1.22px;
         cursor: pointer;
@@ -69,7 +63,6 @@ img {
         width: 110px;
         height: 22px;
         margin: 0 auto;
-        font-family: NotoSansSC;
         font-size: 15px;
         letter-spacing: 0.65px;
         color: #2189e9;

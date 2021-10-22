@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
-
 .myDiarySpans {
     display: inline-block;
     margin: 6px auto;
-    font-family: 'Noto Sans SC';
     font-size: 24px;
     font-weight: 300;
     text-align: center;
@@ -14,8 +11,6 @@
 .myDiarySpansSm {
     display: inline-block;
     width: 48px;
-    // height: 48px;
-    font-family: 'Noto Sans SC';
     font-size: 14px;
     font-weight: 300;
     text-align: center;
@@ -59,7 +54,6 @@
         }
         &_title {
             height: 36px;
-            font-family: 'Noto Sans SC';
             font-size: 24px;
             color: #42495e;
         }
@@ -67,7 +61,6 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            font-family: 'Noto Sans SC';
             font-size: 18px;
             color: #42495e;
         }
