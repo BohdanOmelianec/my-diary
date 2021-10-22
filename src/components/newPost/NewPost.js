@@ -1,44 +1,56 @@
 import React, {useState} from 'react';
+import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import Header from '../header/Header';
 import {useHistory} from 'react-router'
+import { signout } from '../../redux/rootReducer';
 
-import { signout, createPost } from '../../redux/rootReducer';
-import './newItem.scss';
+import './newPost.scss';
 
-const NewItem = () => {
+
+const NewPost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState(false);
-    const signedUp = useSelector(state => state.reducerNew.signedUp);
-    
+    const isOnline = useSelector(state => state.reducerNew.isOnline);
+    const token = useSelector(state => state.reducerNew.token);
+    const history = useHistory();
+
     const dispatch = useDispatch();
-    const history = useHistory()
     
 
     const addPost = (e) => {
         e.preventDefault();
+
         if(title && content) {
-            dispatch(createPost({
-                title, 
-                content,
-                creator: 'Creator',
-                created_at:	'2020年8月3日',
-                updated_at:	'string (date-time)'
-            }))
+            fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/posts`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authsessiontoken': `${token}` 
+                },
+                body: JSON.stringify({
+                    title, 
+                    content,
+                })
+            })
+                .then(res => {
+                    if(!res.ok) {
+                        throw new Error(`Could not fetch this url status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(res => console.log(res))
+                .catch(() => setError(true));
             history.push("/my-diary");
-        } else {
-            setError(true);
         }
-        
     }
 
     return (
         <>
-            {signedUp ? null : <Redirect to='/sign-in' />}
+            {isOnline ? null : <Redirect to='/sign-in' />}
             <Header>
-                <Link to='/my-diary'><span className='myDiarySpansSm' >'退回</span></Link>
+                <Link to='/my-diary'><span className='myDiarySpansSm' >退回</span></Link>
                 <span className='myDiarySpans'>新日记条目</span>
                 <span className='myDiarySpansSm' onClick={() => dispatch(signout())}>退出</span>
             </Header>
@@ -68,4 +80,4 @@ const NewItem = () => {
     );
 };
 
-export default NewItem;
+export default NewPost;

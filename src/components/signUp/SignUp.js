@@ -1,32 +1,54 @@
 import React, { useState } from 'react';
+import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import logo from '../../img/signin_logo.svg';
-import { createUser } from '../../redux/rootReducer';
-import Header from '../header/Header';
+import { setToken } from '../../redux/rootReducer';
+// import APIService from '../../service/APIService';
 
 import './signUp.scss';
+import logo from '../../img/signin_logo.svg';
 
-export default function SignIn(props) {
+
+function SignIn() {
+    // const apiService = new APIService();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false)
-    const signedUp = useSelector(state => state.reducerNew.signedUp)
+    const isOnline = useSelector(state => state.reducerNew.isOnline)
     const dispatch = useDispatch();
 
+
     const emailCheck = new RegExp(/^\S{3,}@\S{2,}\.\D{2,}/);
-    // const passCheck = new RegExp(/(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}/);
-    const passCheck = new RegExp(/\S{6,}/);
+    const passCheck = new RegExp(/\S{6,}/); // const passCheck = new RegExp(/(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}/);
+
+    const reg = () => {
+        fetch('https://illia-ef1b38.postdemo.tcn.asia/api/v2/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        })
+            .then(res => {
+                if(!res.ok) {
+                    throw new Error(`Could not fetch this url status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(res => dispatch(setToken(res.token)))
+            .catch(() => setError(true))
+    }
 
     const signUp = (e) => {
         e.preventDefault();
         if(emailCheck.test(email) && passCheck.test(password) && name.length > 3) {
-            dispatch(createUser({
-                name,
-                email,
-                password
-            }))
+            reg();
         } else {
             setError(true)
         }
@@ -35,7 +57,7 @@ export default function SignIn(props) {
 
     return(
         <>
-            {signedUp ? <Redirect to='/my-diary' /> : null}
+            {isOnline ? <Redirect to='/my-diary' /> : null}
             <Header><span className='signUpHeader'>注册</span></Header>
             <div className='wrapperUp'>
                 <img src={logo} alt="logo"></img>
@@ -46,7 +68,7 @@ export default function SignIn(props) {
                         type='name' 
                         placeholder='名字...'
                         value={name}
-                        onChange={ e => {setName(e.target.value)}}>
+                        onChange={ e => setName(e.target.value)}>
                     </input>
 
                     <span className='signUp__label'>邮件地址</span>
@@ -54,7 +76,7 @@ export default function SignIn(props) {
                         type='email' 
                         placeholder='邮件地址...'
                         value={email}
-                        onChange={ e => {setEmail(e.target.value)}}>
+                        onChange={ e => setEmail(e.target.value)}>
                     </input>
 
                     <span className='signUp__label'>密码</span>
@@ -62,9 +84,8 @@ export default function SignIn(props) {
                         type='password' 
                         placeholder='密码...'
                         value={password}
-                        onChange={ e =>  {setPassword(e.target.value)}}>
+                        onChange={ e => setPassword(e.target.value)}>
                     </input>
-                    
                     
                     <input className='signUp__submitInput'
                         type='submit'
@@ -77,3 +98,5 @@ export default function SignIn(props) {
         </>
     )
 }
+
+export default SignIn;

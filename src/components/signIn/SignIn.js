@@ -2,44 +2,47 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import logo from '../../img/signin_logo.svg';
-import { signin } from '../../redux/rootReducer';
+import { setToken } from '../../redux/rootReducer';
 import Header from '../header/Header';
-
 import './signIn.scss';
+
+
+
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-    const signedUp = useSelector(state => state.reducerNew.signedUp)
-    const users = useSelector(state => state.reducerNew.users)
+    const isOnline = useSelector(state => state.reducerNew.isOnline)
     
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     fetch('https://Illia-db1e80.postdemo.tcn.asia/api/v2/posts')
-    //         .then(res => console.log(res.json()))
-    // }, [])
 
     const signIn = (e) => {
         e.preventDefault();
-        let err = false;
-        users.forEach(user => {
-            if(user.email === email && user.password === password) {
-                dispatch(signin(user))
-                err = false
-                return;
-            }
-            err = true
-        });
-        if(err) {
-            setError(true)
-        }  
+        fetch('https://illia-ef1b38.postdemo.tcn.asia/api/v2/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        })
+            .then(res => {
+                if(!res.ok) {
+                    throw new Error(`Could not fetch this url status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(res => dispatch(setToken(res.token)))
+            .catch(() => setError(true))
     }
 
     return(
         <>
-            {signedUp ? <Redirect to='/my-diary' /> : null}
+            {isOnline ? <Redirect to='/my-diary' /> : null}
             <Header><span className='signInHeader'>登录</span></Header>
             <div className='wrapper'>
                 <img src={logo} alt="logo"></img>
@@ -52,16 +55,16 @@ export default function SignIn() {
                         placeholder='邮件地址...'
                         autoComplete='off'
                         value={email}
-                        onChange={ e => {setEmail(e.target.value)}}>
+                        onChange={ e => setEmail(e.target.value)}>
                     </input>
+
                     <span className='signIn__label'>密码</span>
                     <input className='signIn__input' 
                         type='password' 
                         placeholder='密码...'
                         value={password}
-                        onChange={ e =>  {setPassword(e.target.value)}}>
+                        onChange={ e => setPassword(e.target.value)}>
                     </input>
-                    
                     
                     <input className='signIn__submitInput'
                         type='submit'

@@ -1,46 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    users: [],
-    posts: [
-        {
-            id:	'0',
-            title: '怎么肯能跟我分手', 
-            content: 'Some content',
-            creator: 'Creator',
-            created_at:	'2020年8月3日',
-            updated_at:	'string (date-time)'
-        },
-        {
-            id:	'1',
-            title: '下午的事情', 
-            content: 'Some content',
-            creator: 'Creator',
-            created_at:	'2020年8月3日',
-            updated_at:	'string (date-time)'
-        }
-    ],
-    currentUser: {},
-    selectedItem: [],
-    signedUp: false
+    posts: [],
+    selectedId: '',
+    isOnline: false,
+    token: ''
 }
 
 const reducerNew = createSlice({
     name: 'reducer',
     initialState,
     reducers: {
-        createUser(state, action) {
-            state.users = [...state.users, action.payload]
-            state.signedUp = true
-            state.currentUser = action.payload
+        setToken(state, action) {//use
+            state.token = action.payload
+            state.isOnline = true
+        },
+        setPosts(state, action) {//use
+            state.posts = action.payload
         },
         signin(state, action) {
-            state.signedUp = true
+            state.isOnline = true
             state.currentUser = action.payload
         },
-        signout(state) {
-            state.signedUp = false
-            state.currentUser = {}
+        signout(state) {//use
+            state.posts = [];
+            state.selectedId = '';
+            state.isOnline = false;
+            state.token = '';
         },
         createPost(state, action) {
             state.posts = [...state.posts, {id: state.posts.length, ...action.payload}]
@@ -53,13 +39,11 @@ const reducerNew = createSlice({
                 return post;
             })
         },
-        setSelectedItem(state, action) {
-            
+        setSelectedId(state, action) {//use
             if(!action.payload) {
-                console.log('action.payload == 0')
-                state.selectedItem = []
+                state.selectedId = ''
             } else {
-                state.selectedItem = state.posts.filter(post => post.id === action.payload)
+                state.selectedId = action.payload
             }
             
         }
@@ -67,4 +51,4 @@ const reducerNew = createSlice({
 });
 
 export default reducerNew.reducer;
-export const { createUser, signin, signout, createPost, updatePost, setSelectedItem } = reducerNew.actions;
+export const { signin, signout, setPosts, setSelectedId, setToken } = reducerNew.actions;

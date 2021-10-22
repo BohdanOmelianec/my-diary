@@ -6,8 +6,8 @@ import SignIn from './components/signIn/SignIn';
 import SignOut from './components/SignOut';
 import SignUp from './components/signUp/SignUp';
 import MyDiary from './components/myDiary/MyDiary';
-import NewItem from './components/newItem/NewItem';
-import EditItem from './components/editItem/EditItem';
+import NewPost from './components/newPost/NewPost';
+import ViewPost from './components/viewPost/ViewPost';
 
 import './style.scss';
 
@@ -36,11 +36,11 @@ function App() {
                     <Route exact path='/my-diary'>
                         <MyDiary/>
                     </Route>
-                    <Route exact path='/diary-item'>
-                        <NewItem/>
+                    <Route exact path='/new-post'>
+                        <NewPost/>
                     </Route>
-                    <Route exact path='/edit-item'>
-                        <EditItem/>
+                    <Route exact path='/view-post'>
+                        <ViewPost/>
                     </Route>
                 </Switch>
             </div> 
