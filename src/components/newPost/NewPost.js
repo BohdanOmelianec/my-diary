@@ -3,7 +3,7 @@ import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import {useHistory} from 'react-router'
-import { signout, addPost } from '../../redux/rootReducer';
+import { signout } from '../../redux/rootReducer';
 import APIService from '../../service/APIService';
 
 import './newPost.scss';
@@ -12,10 +12,11 @@ import './newPost.scss';
 const apiService = new APIService();
 
 
-const NewPost = () => {
+function NewPost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const isOnline = useSelector(state => state.reducerNew.isOnline);
     const token = useSelector(state => state.reducerNew.token);
     const history = useHistory();
@@ -23,32 +24,30 @@ const NewPost = () => {
     const dispatch = useDispatch();
     
 
-    const addPost = async (e) => {
-        e.preventDefault();
+    const addPost =  () => {
+        setLoading(true)
 
         if(title && content) {
+            setLoading(true)
             const data = {
                 title, 
                 content,
             }
-            const responce = await apiService.postResource(`posts?authsessiontoken=${token}`, data)
-                .then(res => res)
-                .catch(() => setError(true));
-            dispatch(addPost(responce))
-            history.push("/my-diary");
+            apiService.postResource('posts', data, token)
+                .then(() => {
+                    setLoading(false)
+                    history.push("/my-diary")
+                })
+                .catch(() => setError(true))
+        } else {
+            setError(true)
         }
+    }
 
-        // fetch(`https://illia-ef1b38.postdemo.tcn.asia/api/v2/posts`, {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'authsessiontoken': `${token}` 
-        //         },
-        //         body: JSON.stringify({
-        //             title, 
-        //             content,
-        //         })
-        //     })
+    const disabledStyle = {
+        borderColor: '#949494',
+        backgroundColor: '#f3f3f3',
+        color: '#7d7d7d'
     }
 
     return (
@@ -66,6 +65,7 @@ const NewPost = () => {
                 <input className='item__input' 
                     type='text' 
                     placeholder='日记条目标题...'
+                    style={loading ? disabledStyle : null}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
@@ -74,15 +74,19 @@ const NewPost = () => {
                     type='text'
                     value={content}
                     placeholder='日记条目内容...'
+                    style={loading ? disabledStyle : null}
                     onChange={(e) => setContent(e.target.value)}
                 />
                 <input className='item__submitInput'
                     type='submit'
                     value='注册'
+                    style={{backgroundColor: loading ? '#939393' : '#291e1e', border: 'none'}}
                     onClick={addPost}/>
             </div>
         </>
     );
 };
+
+
 
 export default NewPost;

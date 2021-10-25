@@ -13,11 +13,12 @@ class APIService {
         return res.json();
     }
 
-    postResource = async (url, data) => {
+    postResource = async (url, data, token) => {
         let res = await fetch(`${this._baseUrl}${url}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authsessiontoken': token
             },
             body: JSON.stringify(data)
         })

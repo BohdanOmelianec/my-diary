@@ -10,10 +10,11 @@ import './signIn.scss';
 
 const apiService = new APIService();
 
-export default function SignIn() {
+function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const isOnline = useSelector(state => state.reducerNew.isOnline)
     
     const dispatch = useDispatch();
@@ -21,18 +22,31 @@ export default function SignIn() {
 
     const signIn = (e) => {
         e.preventDefault();
+        setError(false);
+        
         if(email && password) {
+            setLoading(true);
             const data = {
                 email,
                 password
             };
-    
+
             apiService.authorisation('auth/login', data)
-                .then(res => dispatch(setToken(res.token)))
+                .then(res => {
+                    setLoading(false)
+                    dispatch(setToken(res.token))
+                })
                 .catch(() => setError(true))
+                // .finally(() => setLoading(false))
         } else {
             setError(true)
         }
+    }
+
+    const disabledStyle = {
+        borderColor: '#949494',
+        backgroundColor: '#f3f3f3',
+        color: '#7d7d7d'
     }
 
     return(
@@ -46,7 +60,8 @@ export default function SignIn() {
                 <form className='signIn' autoComplete='off'>
                     <span className='signIn__label'>邮件地址</span>
                     <input className='signIn__input' 
-                        type='email' 
+                        type='email'
+                        style={loading ? disabledStyle : null}
                         placeholder='邮件地址...'
                         autoComplete='off'
                         value={email}
@@ -55,7 +70,8 @@ export default function SignIn() {
 
                     <span className='signIn__label'>密码</span>
                     <input className='signIn__input' 
-                        type='password' 
+                        type='password'
+                        style={loading ? disabledStyle : null} 
                         placeholder='密码...'
                         value={password}
                         onChange={ e => setPassword(e.target.value)}>
@@ -63,12 +79,14 @@ export default function SignIn() {
                     
                     <input className='signIn__submitInput'
                         type='submit'
-                        value='登录' 
+                        value='登录'
+                        style={{backgroundColor: loading ? '#939393' : '#291e1e', border: 'none'}} 
                         onClick={signIn}/>
                     <Link to='/sign-up' className='signIn__question'>没有帐号？注册</Link>
                 </form>
-
             </div>
         </>
     )
 }
+
+export default SignIn;

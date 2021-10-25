@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Redirect } from 'react-router';
-// import Header from './components/header/Header';
 import SignIn from './components/signIn/SignIn';
 import SignUp from './components/signUp/SignUp';
 import MyDiary from './components/myDiary/MyDiary';
@@ -9,8 +8,6 @@ import NewPost from './components/newPost/NewPost';
 import ViewPost from './components/viewPost/ViewPost';
 
 import './style.scss';
-
-
 
 function App() {
     useEffect(() => {

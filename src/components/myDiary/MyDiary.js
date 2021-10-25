@@ -3,7 +3,7 @@ import Header from '../header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { signout, setSelectedId, setPosts, setFirstLoading } from '../../redux/rootReducer';
+import { signout, setSelectedId, setPosts } from '../../redux/rootReducer';
 import APIService from '../../service/APIService';
 
 import './myDiary.scss';
@@ -11,30 +11,28 @@ import plus from '../../img/plus.png';
 
 const apiService = new APIService();
 
-const MyDiary = () => {
+function MyDiary() {
     const [myself, setMyself] = useState({});
     const [error, setError] = useState('');
     const posts = useSelector(state => state.reducerNew.posts);
     const isOnline = useSelector(state => state.reducerNew.isOnline);
     const token = useSelector(state => state.reducerNew.token);
-    const firstLoading = useSelector(state => state.reducerNew.firstLoading);
 
     const history = useHistory();
     const dispatch = useDispatch();
     
 
     useEffect(() => {
-        if(firstLoading) {
-            apiService.getResource(`users/me?authsessiontoken=${token}`)
-                .then(res => setMyself(res))
-                .catch(() => setError(true));
-
-            apiService.getResource(`users/me/posts?authsessiontoken=${token}`)
-                .then(res => dispatch(setPosts(res)))
-                .catch(() => setError(true));  
-            dispatch(setFirstLoading(false))
-        }
-    }, []);
+        if(!token) return;
+        
+        apiService.getResource(`users/me?authsessiontoken=${token}`)
+            .then(res => setMyself(res))
+            .catch(() => setError(true));
+        
+        apiService.getResource(`users/me/posts?count=100&page=1&authsessiontoken=${token}`)
+            .then(res => dispatch(setPosts(res)))
+            .catch(() => setError(true));
+    }, [dispatch, token]);
 
     const viewPost = (id) => {
         dispatch(setSelectedId(id))
@@ -42,12 +40,15 @@ const MyDiary = () => {
     }
 
     const content = posts.map(post => {
+        const date = new Date(post.created_at);
+        const created = `${date.getFullYear()}年${date.getMonth()}月${date.getDate()}日`;
+
         return <li className='diaryBlock__item'
                     key={post.id}
                     onClick={() => viewPost(post.id)}>
                     <div className='diaryBlock__item_block'>
                         <span className='diaryBlock__item_title'>{post.title}</span>
-                        <span className='diaryBlock__item_created'>{post.created_at}</span>
+                        <span className='diaryBlock__item_created'>{created}</span>
                     </div>
                 </li>
     })
@@ -58,7 +59,7 @@ const MyDiary = () => {
 
             <div className='diaryBlock'>
                 <Header>
-                    <span className='myDiarySpansSm'>{myself.name ? myself.name : '陈奕迅'}</span>
+                    <span className='myDiarySpansSm'>{myself.name ? myself.name : ''}</span>
                     <span className='myDiarySpans'>我的日记</span>
                     <span className='myDiarySpansSm' onClick={() => dispatch(signout())}>退出</span>
                 </Header>

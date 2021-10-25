@@ -10,21 +10,24 @@ import logo from '../../img/signin_logo.svg';
 
 const apiService = new APIService();
 
-function SignIn() {
+function SignUp() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
     const isOnline = useSelector(state => state.reducerNew.isOnline)
     const dispatch = useDispatch();
 
 
     const emailCheck = new RegExp(/^\S{3,}@\S{2,}\.\D{2,}/);
-    const passCheck = new RegExp(/\S{6,}/); // const passCheck = new RegExp(/(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,}/);
+    const passCheck = new RegExp(/\S{6,}/);
 
     const signUp = (e) => {
         e.preventDefault();
+        
         if(emailCheck.test(email) && passCheck.test(password) && name.length > 3) {
+            setLoading(true)
             const data = {
                 name,
                 email,
@@ -32,11 +35,20 @@ function SignIn() {
             };
 
             apiService.authorisation('auth/register', data)
-                .then(res => dispatch(setToken(res.token)))
+                .then(res => {
+                    setLoading(false)
+                    dispatch(setToken(res.token))
+                })
                 .catch(() => setError(true))
         } else {
             setError(true)
         }
+    }
+
+    const disabledStyle = {
+        borderColor: '#949494',
+        backgroundColor: '#f3f3f3',
+        color: '#7d7d7d'
     }
 
     return(
@@ -51,6 +63,7 @@ function SignIn() {
                     <input className='signUp__input' 
                         type='name' 
                         placeholder='名字...'
+                        style={loading ? disabledStyle : null}
                         value={name}
                         onChange={ e => setName(e.target.value)}>
                     </input>
@@ -59,6 +72,7 @@ function SignIn() {
                     <input className='signUp__input' 
                         type='email' 
                         placeholder='邮件地址...'
+                        style={loading ? disabledStyle : null}
                         value={email}
                         onChange={ e => setEmail(e.target.value)}>
                     </input>
@@ -67,20 +81,21 @@ function SignIn() {
                     <input className='signUp__input' 
                         type='password' 
                         placeholder='密码...'
+                        style={loading ? disabledStyle : null}
                         value={password}
                         onChange={ e => setPassword(e.target.value)}>
                     </input>
                     
                     <input className='signUp__submitInput'
                         type='submit'
-                        value='注册' 
+                        value='注册'
+                        style={{backgroundColor: loading ? '#939393' : '#291e1e', border: 'none'}} 
                         onClick={signUp}/>
                     <Link to='/sign-in' className='signUp__question'>已有帐号？去登录</Link>
                 </form>
-
             </div>
         </>
     )
 }
 
-export default SignIn;
+export default SignUp;

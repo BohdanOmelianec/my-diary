@@ -25,6 +25,7 @@
         padding: 6px 8px 7px;
         border: solid 2px #000;
         background-color: #f2f2f2;
+        color: #000;
     }
     &__textarea {
         height: 300px;
@@ -45,6 +46,7 @@
         text-align: center;
         color: #fff;
         align-self: flex-end;
+        border: none;
     }
     &__errorMsg {
         display: none;
